@@ -12,12 +12,14 @@ import (
 
 	"github.com/Amr-Shams/aoc2024/challenge/day1"
     "github.com/Amr-Shams/aoc2024/challenge/day2"
+	"github.com/Amr-Shams/aoc2024/util/gen"
 	
 )
 
 func addDays(root *cobra.Command) {
 	day1.AddCommandsTo(root)
     day2.AddCommandsTo(root)
+	gen.AddCommandsTo(root)
 }
 
 type prof interface {

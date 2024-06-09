@@ -4,8 +4,8 @@ import (
     "strings"
     "github.com/spf13/cobra"
     "github.com/Amr-Shams/aoc2024/challenge"
-    "github.com/Amr-Shams/aoc2024/challenge/util"
-    "github.com/Amr-Shams/aoc2024/challenge/util/gmath"
+    "github.com/Amr-Shams/aoc2024/util"
+    "github.com/Amr-Shams/aoc2024/util/gmath"
 )
 func aCommand() *cobra.Command {
     return &cobra.Command{
