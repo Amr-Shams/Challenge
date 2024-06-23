@@ -65,3 +65,9 @@ func (c *Input) Lines() <-chan string {
 }
 
 
+func (c *Input) LineSlice()(result []string){
+    for line := range c.Lines() {
+        result = append(result, line)
+    }
+    return
+}

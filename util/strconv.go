@@ -9,3 +9,12 @@ func Atoi(s string) (int) {
     }
     return i
 }
+
+func Atof(s string) (float64) {
+    f, err := strconv.ParseFloat(s, 64)
+    if err != nil {
+        log.Fatal(err)
+        return 0
+    }
+    return f
+}
