@@ -6,7 +6,7 @@ import(
 )
 
 type data interface {
-    constraints.Integer | constraints.Float | rune | string 
+    constraints.Integer | constraints.Float | rune | string | bool 
 }
 
 type Matrix[T data] struct {
@@ -29,7 +29,7 @@ func (m *Matrix[T]) Set(row, col int, val T) {
 }
 
 func (m *Matrix[T]) Get(row, col int) T {
-    val, _ := m.getIndex(row, col)
+    val,_ := m.getIndex(row, col)
     return val
 }
 func (m *Matrix[T]) getIndex(row, col int) (T,error) {
@@ -57,6 +57,24 @@ func CreateMatrixFrom[T data](input *challenge.Input,convert func(rune) T) *Matr
     return m
 }
 
+func (m *Matrix[T])Walkneighbors(row, col int, visit func(T)){
+    var dir=[]struct{dx,dy int}{
+        {0,1},
+        {0,-1},
+        {1,0},
+        {-1,0},
+        {1,1},
+        {1,-1},
+        {-1,1},
+        {-1,-1},
+    }
+    for _,d:=range dir{
+        r,c:=row+d.dx,col+d.dy
+        if val,err:=m.getIndex(r,c);err==nil{ 
+            visit(val)
+        }
+    }
+}
 
 
 

@@ -21,11 +21,9 @@ func aCommand() *cobra.Command {
 func partA(challenge *challenge.Input) int {
    mat:= matrix.CreateMatrixFrom[rune](challenge, matrix.ConvertToRune)
    sum:=0
- 
    for i:=0; i<mat.Rows;i++{
     for j:=0; j<mat.Cols;j++{
-        r:=mat.Get(i,j)
-   
+        r:=mat.Get(i,j) 
         if r<'0' || r>'9' || !adjSymbols(i,j,mat){continue}
         val,start,end:=extractNumber(i,j,mat)
         sum+=val
@@ -37,17 +35,16 @@ func partA(challenge *challenge.Input) int {
    return sum
 }   
 
-func adjSymbols(x,y int, mat *matrix.Matrix[rune])bool{
-    var directions = [][]int{{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,-1},{1,-1},{-1,1}}
-    valid:=false
-    for _,dir:=range directions{
-        r:=mat.Get(x+dir[0],y+dir[1])
-        if r!='.' && !(r>='0' && r<='9'){
-            valid=true
-            break
-        }
-     }
-    return valid 
+
+
+func adjSymbols(x,y int, mat *matrix.Matrix[rune])(result bool){
+    mat.Walkneighbors(x,y,func(r rune){   
+        if r != '.' && !(r >= '0' && r <= '9') {
+			result = true
+            return 
+		}    
+    })
+    return result
 }
 
 func extractNumber(x,y int, mat *matrix.Matrix[rune])(val,start,end int){     
