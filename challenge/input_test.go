@@ -39,4 +39,16 @@ func TestFromFile(t *testing.T) {
 			t.Errorf("FromFile() line %d = %v, want %v", i, line, expectedLines[i])
 		}
 	}
+
+    // test the new sections func 
+    sections := input.Sections()
+    for i, section := range sections {
+        if i >= len(expectedLines) {
+            t.Errorf("Extra section in FromFile(): %v", section)
+            continue
+        }
+        if section != expectedLines[i] {
+            t.Errorf("FromFile() section %d = %v, want %v", i, section, expectedLines[i])
+        }
+    }
 }

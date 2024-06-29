@@ -71,3 +71,29 @@ func (c *Input) LineSlice()(result []string){
     }
     return
 }
+
+func (c* Input) Sections() <-chan string {
+    result := make(chan string)
+    go func() {
+        var section string
+        for line := range c.Lines() {
+            if line == "" {
+                if len(section) > 0 {
+                    result <- section
+                    section ="" 
+                }
+            } else {
+                line += "\n"
+                section += line
+            }
+        }
+        if len(section) > 0 {
+            result <- section
+        }
+        close(result)
+    }()
+    return result
+}
+
+
+
