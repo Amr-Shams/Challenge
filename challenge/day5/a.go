@@ -50,8 +50,8 @@ func getFinalMapping(seed int, ranges [][]mappingRange) int {
 	currentSeed := seed
 	for _, r := range ranges {
 		for _, range_ := range r {
-            if currentSeed >= range_.start && currentSeed < range_.start + range_.offset {
-                currentSeed = range_.end + (currentSeed - range_.start)
+            if currentSeed >= range_.end && currentSeed < range_.end + range_.offset {
+                currentSeed = range_.start + (currentSeed - range_.end)
                 break
             }
         }
@@ -74,7 +74,6 @@ func partA(challenge *challenge.Input) int {
 	for i, seed := range seeds {
 		newSeeds[i] = getFinalMapping(seed, ranges)
 	}
-    fmt.Printf("New seeds: %v\n", newSeeds)
 	var minNewSeed int
 	for _, seed := range newSeeds {
 		if minNewSeed == 0 || seed < minNewSeed {

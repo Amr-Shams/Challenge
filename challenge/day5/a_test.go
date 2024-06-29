@@ -43,7 +43,7 @@ humidity-to-location map:
 
 func TestPartA(t *testing.T) {
     input:=challenge.FromLiteral(example)
-    require.Equal(t, "0", partA(input))
+    require.Equal(t,35, partA(input))
 
 
 }
