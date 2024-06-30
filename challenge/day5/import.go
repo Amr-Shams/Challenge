@@ -8,5 +8,6 @@ func AddCommandsTo(root* cobra.Command){
         Short: "Run day 5 solutions",
     }
     day.AddCommand(aCommand())
+    day.AddCommand(bCommand())
     root.AddCommand(day)
 }

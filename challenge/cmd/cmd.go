@@ -15,6 +15,7 @@ import (
     "github.com/Amr-Shams/aoc2024/challenge/day3"
     "github.com/Amr-Shams/aoc2024/challenge/day4"
 	"github.com/Amr-Shams/aoc2024/challenge/day5"
+    "github.com/Amr-Shams/aoc2024/challenge/day6"
     "github.com/Amr-Shams/aoc2024/util/gen"	
 )
 
@@ -24,6 +25,7 @@ func addDays(root *cobra.Command) {
     day3.AddCommandsTo(root)
     day4.AddCommandsTo(root)
     day5.AddCommandsTo(root)
+    day6.AddCommandsTo(root)
 	gen.AddCommandsTo(root)
 }
 
