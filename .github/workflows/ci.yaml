@@ -1,43 +1,46 @@
-name: CI 
+name: CI
 on: [push, pull_request]
 
 jobs:
   test:
-    name: Testing 
+    name: Test
     runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          go: [1.21]
-      steps:
-        - uses: actions/checkout@v2
-        - name: Set up Go ${{ matrix.go-version }}
-          uses: actions/setup-go@v2
-          with:
-            go-version: ${{ matrix.go-version }}
-         - name: Run Tests
-           run: go test -v -cover -covermode=count -coverprofile=coverage.out ./...
-         - name: Convert Coverage 
-           uses: jandelgado/gcov2lcov-action@v1.0.9
-         - name: cover all 
-           uses: coverallsapp/github-action@v2.2.3
-           with: 
-             github-token: ${{ secrets.GITHUB_TOKEN }}
-             path-to-lcov: coverage.lcov  
+    strategy:
+      matrix:
+        go: [1.21]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
 
-      lint:
-        runes-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v2
-          - name: get source 
-          
-          - name: Setup 
-            uses: actions/setup-go@v4
-            with:
-              go-version: 1.21.x
-          - name: Run lint
-            uses: golangci/golangci-lint-action@v3
-            with:
-              version: latest
-              args: golangci-lint run ./...
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go }}
 
+      - name: Run Tests
+        run: go test -v -cover -covermode=count -coverprofile=coverage.out ./...
 
+      - name: Convert Coverage
+        uses: jandelgado/gcov2lcov-action@v1.0.9
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2.2.3
+        with:
+          github-token: ${{ secrets.github_token }}
+          path-to-lcov: coverage.lcov
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Sources
+        uses: actions/checkout@master
+
+      - name: Setup
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.21
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: v1.55.2
