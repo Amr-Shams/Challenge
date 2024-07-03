@@ -16,41 +16,48 @@ func aCommand() *cobra.Command {
         },
     }
 }
-
-
-func partA(challenge *challenge.Input) int {
-    var steps string
-    // Create a map of maps, initializing the nested maps
+func parseInput(challenge *challenge.Input)([]string,string, map[string]map[string]string){
     Go := map[string]map[string]string{
         "L": make(map[string]string),
         "R": make(map[string]string),
     }
-
-    // Iterate over challenge sections
-    for section := range challenge.Sections() {
-        if len(steps) == 0 {
-            steps = section
-        }else{
-        // Split the section by " = "
-        parts := strings.Split(section, " = ")
-        start := parts[0]
-        leftRight := strings.Split(parts[1], ",")
-        left := strings.TrimSpace(leftRight[0][1:])
-        right := strings.TrimSpace(leftRight[1][:len(leftRight[1])-1])
-        Go["L"][start] = left
-        Go["R"][start] = right
-        fmt.Printf("Go[%s][%s] = %s\n", "L", start, left)
+    startPos := make([]string, 0)
+    seondSection := false
+    steps := ""
+    for line := range challenge.Lines() {
+        if line == "" {
+            seondSection = true
+            continue
+        }
+        if !seondSection {
+            steps+=line
+        } else{
+            //XKM = (FRH, RLM)
+            parts := strings.Split(line, " = ")
+            parts[1] = strings.ReplaceAll(parts[1], "(", "")
+            parts[1] = strings.ReplaceAll(parts[1], ")", "")
+            parts[1] = strings.ReplaceAll(parts[1], ",", "")
+            left := strings.Split(parts[1], " ")[0]
+            right := strings.Split(parts[1], " ")[1]
+            if parts[0][len(parts[0])-1] == byte('A'){
+                startPos = append(startPos, parts[0])
+            }
+            Go["L"][parts[0]] = left
+            Go["R"][parts[0]] = right
         }
     }
-    
-    
-    t := 0
-   // pos := "AAA" // Example starting position, replace with actual start if needed
-    //for pos != "ZZZ" && t<10 { // Example end position, replace with actual end if needed
-      //  direction := string(steps[t % len(steps)])
-       // pos = Go[direction][pos]
-        //t++
-   // }
+    return startPos,steps,Go
+}
 
+func partA(challenge *challenge.Input) int {
+    var steps string
+    _,steps,Go := parseInput(challenge)    
+    t := 0
+    pos := "AAA" // Example starting position, replace with actual start if needed
+    for pos != "ZZZ" { // Example end position, replace with actual end if needed
+       direction := string(steps[t % len(steps)])
+        pos = Go[direction][pos]
+        t++
+    }
     return t
 }

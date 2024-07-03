@@ -10,6 +10,6 @@ func AddCommandsTo(root *cobra.Command) {
     }
     
     day.AddCommand(aCommand())
-
+    day.AddCommand(bCommand())
     root.AddCommand(day)
 }
