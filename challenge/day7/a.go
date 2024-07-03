@@ -43,7 +43,6 @@ func mapRune(r byte)int{
         default:
             return int(r-'0')
     }
-    return 0
 }
 const (
     HighCard = iota 
@@ -73,37 +72,52 @@ func  compare(a,b hand, mapRune func(byte)int)int{
     }
     return 0
 }
-func rankIt(cnt map[rune]int, h *hand){
-     if len(cnt)==5{
-        h.score=HighCard
-        return
+func rankIt(cnt map[rune]int, h *hand) {
+    // Create a list of values
+    values := make([]int, 0, len(cnt))
+    for _, v := range cnt {
+        values = append(values, v)
     }
-    if len(cnt)==4{
-        h.score=OnePair
-        return
-    }
-    if len(cnt)==3{
-       for v,_:=range cnt{
-        if cnt[v]==3{
-            h.score=ThreeOfAKind
-            return
+    sort.Ints(values)
+
+    // Custom function to compare slices
+    equals := func(a, b []int) bool {
+        if len(a) != len(b) {
+            return false
         }
-       }
-        h.score=TwoPair
-        return
-    }
-    if len(cnt)==2{
-       for v,_:=range cnt{
-       if cnt[v]==3{
-           h.score=FullHouse
-           return
-       
+        for i := range a {
+            if a[i] != b[i] {
+                return false
+            }
         }
-       }
-        h.score=FourOfAKind
+        return true
+    }
+
+    if equals(values, []int{5}) {
+        h.score = FiveOfAKind
         return
     }
-    h.score=FiveOfAKind   
+    if equals(values, []int{1, 4}) {
+        h.score = FourOfAKind
+        return
+    }
+    if equals(values, []int{2, 3}) {
+        h.score = FullHouse
+        return
+    }
+    if equals(values, []int{1, 1, 3}) {
+        h.score = ThreeOfAKind
+        return
+    }
+    if equals(values, []int{1, 2, 2}) {
+        h.score = TwoPair
+        return
+    }
+    if equals(values, []int{1, 1, 1, 2}) {
+        h.score = OnePair
+        return
+    }
+    h.score = HighCard
 }
 
   

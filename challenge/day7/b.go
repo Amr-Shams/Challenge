@@ -23,18 +23,19 @@ func (h*hand) rankHand() {
     var maxChar rune
     for _,c:=range h.hand{
         cnt[c]++
-        if cnt[c]>cnt[maxChar]{
+        if cnt[c]>cnt[maxChar] || maxChar=='J'{
             maxChar=c
         }
     }
-    cnt[maxChar]+=cnt['J']
     if cnt['J']==5{
         h.score=FiveOfAKind
         return
     }
-    delete(cnt,'J')
+    if maxChar!='J'{
+        cnt[maxChar]+=cnt['J']
+        delete(cnt,'J')
+    }
     rankIt(cnt,h)
-
 }
 func mapByte(b byte) int {
     switch b {
